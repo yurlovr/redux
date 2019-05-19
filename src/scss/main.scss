@@ -6,3 +6,13 @@ body {
   max-width: 600px;
   margin: 0 auto;
 }
+
+.button-container {
+  width: 20%;
+  display: flex;
+  justify-content: space-between;
+}
+
+button.btn-danger {
+  width: 36px;
+}
