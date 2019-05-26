@@ -1,23 +1,39 @@
 import React, { Component } from "react";
 import "./App.css";
-import {createStore} from "redux";
+import { createStore } from "redux";
 
-const initialState = {count: 0};
+const initialState = { count: 0 };
 
-function reducer (state={ count: 0} , action) {
+function reducer(state = { count: 0 }, action) {
   switch (action.type) {
-    case "INCREMENT": return {count: state.count + action.amount};
-    case "DECREMENT": return  {count: state.count - action.amount};
-    case "RESET": return  {count: 0};
-    default: return state;
+    case "INCREMENT":
+      return { count: state.count + action.amount };
+    case "DECREMENT":
+      return { count: state.count - action.amount };
+    case "RESET":
+      return { count: 0 };
+    default:
+      return state;
   }
 }
 
-const incrementAction = {type: "INCREMENT", amount: 1};
-const decrementAction = {type: "DECREMENT", amount: 1};
-const resetAction = {type: "RESET"};
 
-const store = createStore(reducer, initialState);
+function increment(amount) {
+    return {type: "INCREMENT", amount}
+}
+
+function decrement(amount) {
+    return {type: "DECREMENT", amount}
+}
+function reset() {
+    return {type: "RESET"}
+}
+
+const store = createStore(
+  reducer,
+  initialState,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 export default class App extends Component {
   constructor(props) {
     super(props);
@@ -32,26 +48,35 @@ export default class App extends Component {
   }
 
   increment() {
- store.dispatch(incrementAction);
+    let amount = +this.refs.amount.value || 1;
+    store.dispatch(increment(amount));
   }
 
   decrement() {
-    store.dispatch(decrementAction);
+    let amount = +this.refs.amount.value || 1;
+    store.dispatch(decrement(amount));
   }
   reset() {
-    store.dispatch(resetAction);
+    store.dispatch(reset());
   }
 
   render() {
-      const count = store.getState().count;
+    const count = store.getState().count;
     return (
       <div className="App">
         <header className="App-header">
           <h1>{count}</h1>
           <div className="button-container">
-            <button className="btn-primary" onClick={this.increment}> <b>+</b> </button>
-            <button className="btn-danger" onClick={this.decrement}> <b>-</b> </button>
+            <button className="btn-primary" onClick={this.increment}>
+              {" "}
+              <b>+</b>{" "}
+            </button>
+            <button className="btn-danger" onClick={this.decrement}>
+              {" "}
+              <b>-</b>{" "}
+            </button>
             <button onClick={this.reset}> Reset</button>
+            <input type="text" ref="amount" defaultValue="1" />
           </div>
         </header>
       </div>
